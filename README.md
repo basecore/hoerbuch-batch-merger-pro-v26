@@ -1,4 +1,4 @@
-# 🎧 Hörbuch Batch-Merger PRO V37
+# 🎧 Hörbuch Batch-Merger PRO V38
 
 Ein kompaktes, praktisches Python-Tool für alle, die viele Hörspiel- und Hörbuch-CDs digitalisiert haben und daraus **saubere, gut sortierte MP3-Dateien** machen möchten.
 
@@ -39,6 +39,7 @@ Besonders praktisch ist das bei Serien wie **Die drei ???**, **Die drei ??? Kids
 - Optionale CUE-Datei für Track-Navigation
 - Coverbild übernehmen oder manuell setzen
 - Originaldateien optional löschen
+- Automatische Installation fehlender Python-Module beim Start
 - Einfache, übersichtliche GUI für Linux Mint
 
 ---
@@ -59,8 +60,8 @@ Besonders praktisch ist das bei Serien wie **Die drei ???**, **Die drei ??? Kids
 |---|---|---|
 | **Nach Album gruppieren** | Gruppiert geladene MP3s anhand ihres Albums. | Praktisch, wenn mehrere CDs oder Folgen gleichzeitig geladen werden. So erkennt das Tool, welche Dateien zusammengehören. |
 | **Advent-/Weihnachts-Erkennung** | Erkennt spezielle Advents- und Weihnachtshörspiele, insbesondere bei **Die drei ???**. | Hilft bei saisonalen Folgen, die oft eine eigene Behandlung oder Kennzeichnung brauchen. |
-| **MULTI-CD automatisch erkennen** | Erkennt zusätzliche CDs anhand zurückspringender Track- oder Dateinummern. | Wichtig bei Alben mit mehreren CDs, damit nicht alle Tracks fälschlich als ein einziges Album behandelt werden. |
-| **Mehrere Geschichten pro Album trennen** | Erkennt zusammenhängende Blöcke mit demselben Geschichte-Titel innerhalb eines Albums. | Viele Alben enthalten mehrere Geschichten. Diese Option erstellt pro Geschichte eine eigene Ausgabedatei. |
+| **MULTI-CD automatisch erkennen** | Erkennt Hörspiele, die aus mehr als einer CD bestehen, und führt die CDs zusammen. | Perfekt, wenn ein Hörspiel über mehrere CDs verteilt ist und du am Ende **eine einzige MP3 pro Hörspiel** möchtest. So bleibt die Reihenfolge im Audioplayer immer korrekt. |
+| **Mehrere Geschichten pro Album trennen** | Erkennt zusammenhängende Blöcke mit demselben Geschichte-Titel innerhalb eines Albums. | Ideal bei CDs wie **Conni**, auf denen mehrere eigenständige Geschichten enthalten sind. Jede Geschichte erhält eine eigene MP3. |
 | **CUE-Datei automatisch erstellen** | Erstellt optional eine CUE-Datei zur besseren Navigation. | Geeignete Audioplayer können damit Tracks oder Kapitel erkennen und gezielt anspringen. |
 
 ---
@@ -109,22 +110,24 @@ Wenn eine Geschichte nicht bei Track 1 beginnt, aber innerhalb ihrer eigenen Num
 
 - Python 3
 - ffmpeg
-- PyQt5
-- mutagen
 
 ### Unter Linux Mint
 
 ```bash
 sudo apt update
-sudo apt install ffmpeg python3-pyqt5 python3-mutagen
+sudo apt install ffmpeg
 ```
+
+### Python-Module
+
+Die Datei `hoerbuch_merger_V38.py` prüft beim Start automatisch, ob `PyQt5` und `mutagen` vorhanden sind. Fehlende Pakete werden automatisch installiert.
 
 ---
 
 ## ▶️ Starten
 
 ```bash
-python3 hoerbuch_merger_V37.py
+python3 hoerbuch_merger_V38.py
 ```
 
 ---
@@ -145,6 +148,7 @@ python3 hoerbuch_merger_V37.py
 ```text
 hoerbuch_merger_V26.py
 hoerbuch_merger_V37.py
+hoerbuch_merger_V38.py
 README.md
 LICENSE
 requirements.txt
