@@ -1,68 +1,116 @@
-# Hörbuch Batch-Merger PRO V26
+# 🎧 Hörbuch Batch-Merger PRO V37
 
-Ein kompaktes, praktisches Werkzeug für alle, die viele MP3s zu einer gemergten Datei zusammenführen und die passenden ID3-Tags direkt setzen möchten.
+Ein kompaktes, praktisches Python-Tool für alle, die viele Hörspiel- und Hörbuch-CDs digitalisiert haben und daraus **saubere, gut sortierte MP3-Dateien** machen möchten.
 
-Ich habe dieses Tool gebaut, weil ich meine **Die drei ???**-CDs eingelesen habe und sie danach als sauber gemergte MP3s haben wollte, ohne jedes Mal alles manuell nacharbeiten zu müssen. Genau dafür ist das Programm sehr übersichtlich, schnell zu bedienen und im Alltag sehr praktisch.
+> **Hinweis:** Dieses Projekt wurde mit Unterstützung von KI erstellt.
 
-## Funktionen
+---
 
-- Mehrere MP3-Dateien zu einer Datei zusammenführen.
-- ID3-Tags direkt nach dem Merge schreiben.
-- Vorschlagslogik für **Die drei ???** / **Die Drei Fragezeichen** / **DDF**.
-- Automatische Erkennung von `Folge xxx` als Track und Discnumber.
-- Vorschläge für Artist, Title, Album, Track, Discnumber, Year und Genre.
-- Coverbild übernehmen oder manuell setzen.
-- CUE-Datei optional erzeugen.
-- Originaldateien auf Wunsch löschen.
-- Einfache GUI für Linux Mint.
+## 🎯 Warum gibt es dieses Tool?
 
-## Warum dieses Tool praktisch ist
+Ich habe sehr viele Hörspiel-CDs importiert. Dabei entstehen typischerweise viele einzelne MP3-Dateien pro CD — oft mit unvollständigen oder uneinheitlichen ID3-Tags.
 
-Wer viele Hörspiele digitalisiert oder archiviert, kennt das Problem: Dateien müssen sortiert, zusammengeführt und mit sauberen Metadaten versehen werden. Genau hier nimmt dir das Tool viel Handarbeit ab. Besonders bei Serien wie **Die drei ???** hilft die Vorschlagslogik, weil Folgennummern, Titel und Albumname direkt sinnvoll vorbelegt werden.
+Das führt im Alltag zu zwei Problemen:
 
-## Beispiele
+1. **Unübersichtliche Mediathek** — viele kleine Dateien pro Hörspiel machen die Sammlung schwerer zu pflegen.
+2. **Falsche Reihenfolge im Audioplayer** — nicht jeder Player sortiert zuverlässig nach Tracknummer. Dadurch können Teile eines Hörspiels in der falschen Reihenfolge abgespielt werden.
 
-### Beispiel 1
+Deshalb ist es für mich angenehmer, ein Hörspiel als **eine zusammengeführte MP3-Datei** zu haben. So bleibt die Reihenfolge garantiert korrekt.
 
-**Datei:** `Folge 240 und die schwarze Rose.mp3`
+Zusätzlich kann optional eine **CUE-Datei** erstellt werden. Damit können:
 
-- Artist: `Die Drei Fragezeichen`
-- Title: `und die schwarze Rose`
-- Album: `240 und die schwarze Rose`
-- Track: `240`
-- Discnumber: `240`
-- Genre: `Audiobook`
+- geeignete Audioplayer die einzelnen Tracks bzw. Kapitel weiterhin erkennen,
+- Tracks bei Bedarf übersprungen werden,
+- die gemergte MP3 später bei Bedarf wieder in einzelne Tracks aufgeteilt werden.
 
-### Beispiel 2
+Besonders praktisch ist das bei Serien wie **Die drei ???**, **Die drei ??? Kids** oder anderen Hörspielreihen mit vielen CDs und Folgen.
 
-**Datei:** `166 Und Die Brennende Stadt.mp3`
+---
 
-- Artist: `Die Drei Fragezeichen`
-- Title: `Und Die Brennende Stadt`
-- Album: `166 Und Die Brennende Stadt`
-- Track: `166`
-- Discnumber: `166`
-- Genre: `Audiobook`
+## ✨ Funktionen
 
-### Beispiel 3
+- Mehrere MP3-Dateien zu einer Datei zusammenführen
+- ID3-Tags direkt nach dem Merge schreiben
+- Alben, CDs und Geschichten automatisch erkennen
+- Tracknummern aus ID3-Tags oder Dateinamen lesen
+- Vollständigkeitsprüfung der Tracknummern
+- Warnung bei fehlenden oder springenden Tracks
+- Unterstützung für mehrere Geschichten in einem Album
+- Optionale CUE-Datei für Track-Navigation
+- Coverbild übernehmen oder manuell setzen
+- Originaldateien optional löschen
+- Einfache, übersichtliche GUI für Linux Mint
 
-**Datei:** `238 Falsche Schuld.mp3`
+---
 
-- Artist: `Die Drei Fragezeichen`
-- Title: `Falsche Schuld`
-- Album: `238 Falsche Schuld`
-- Track: `238`
-- Discnumber: `238`
-- Genre: `Audiobook`
+## 🖥️ GUI
 
-## Installation
+![GUI](docs/gui.png)
+
+*Die grafische Oberfläche bietet Drag & Drop, Albumgruppierung, Trackprüfung und alle wichtigen Merge-Optionen auf einen Blick.*
+
+> **Hinweis:** Wenn noch kein Screenshot unter `docs/gui.png` vorhanden ist, kannst du dort einfach einen Screenshot der GUI ablegen. Die README zeigt ihn dann automatisch an.
+
+---
+
+## ⚙️ Optionen im Detail
+
+| Option | Was macht sie? | Warum ist sie sinnvoll? |
+|---|---|---|
+| **Nach Album gruppieren** | Gruppiert geladene MP3s anhand ihres Albums. | Praktisch, wenn mehrere CDs oder Folgen gleichzeitig geladen werden. So erkennt das Tool, welche Dateien zusammengehören. |
+| **Advent-/Weihnachts-Erkennung** | Erkennt spezielle Advents- und Weihnachtshörspiele, insbesondere bei **Die drei ???**. | Hilft bei saisonalen Folgen, die oft eine eigene Behandlung oder Kennzeichnung brauchen. |
+| **MULTI-CD automatisch erkennen** | Erkennt zusätzliche CDs anhand zurückspringender Track- oder Dateinummern. | Wichtig bei Alben mit mehreren CDs, damit nicht alle Tracks fälschlich als ein einziges Album behandelt werden. |
+| **Mehrere Geschichten pro Album trennen** | Erkennt zusammenhängende Blöcke mit demselben Geschichte-Titel innerhalb eines Albums. | Viele Alben enthalten mehrere Geschichten. Diese Option erstellt pro Geschichte eine eigene Ausgabedatei. |
+| **CUE-Datei automatisch erstellen** | Erstellt optional eine CUE-Datei zur besseren Navigation. | Geeignete Audioplayer können damit Tracks oder Kapitel erkennen und gezielt anspringen. |
+
+---
+
+## 📚 Mehrere Geschichten trennen
+
+Viele Hörspiel-Alben enthalten mehrere Geschichten auf einer CD. Beispiel:
+
+```text
+01 - Intro
+02–13 - Conni kann nicht einschlafen
+14–25 - Conni macht das Seepferdchen
+26 - Outro
+```
+
+Mit der Option **„Mehrere Geschichten pro Album trennen“** erkennt das Programm zwei Geschichten und erstellt:
+
+```text
+Conni kann nicht einschlafen.mp3
+Conni macht das Seepferdchen.mp3
+```
+
+**Warum ist das wichtig?**  
+Ohne diese Option würden alle Teile zu einer einzigen Datei gemerged. Mit der Option bleibt jede Geschichte eigenständig und sauber benannt.
+
+---
+
+## 🔍 Trackprüfung
+
+Das Programm prüft automatisch, ob die Tracknummern innerhalb eines Albums oder einer Geschichte lückenlos sind.
+
+Beispiel:
+
+```text
+Track 1 bis 13 vorhanden
+Track 14 bis 25 vorhanden
+```
+
+Wenn eine Geschichte nicht bei Track 1 beginnt, aber innerhalb ihrer eigenen Nummerierung lückenlos ist, wird das **nicht** als Fehler gewertet. Fehlt hingegen mitten in einer Geschichte ein Track, wird das erkannt und gemeldet.
+
+---
+
+## 🧰 Installation
 
 ### Voraussetzungen
 
 - Python 3
-- `ffmpeg`
-- `PyQt5`
-- `mutagen`
+- ffmpeg
+- PyQt5
+- mutagen
 
 ### Unter Linux Mint
 
@@ -71,33 +119,46 @@ sudo apt update
 sudo apt install ffmpeg python3-pyqt5 python3-mutagen
 ```
 
-## Starten
+---
+
+## ▶️ Starten
 
 ```bash
-python3 hoerbuch_merger_V26.py
+python3 hoerbuch_merger_V37.py
 ```
 
-## Nutzung
+---
 
-1. MP3-Dateien per Drag & Drop oder Dateiauswahl laden.
-2. Optional nach Album gruppieren lassen.
-3. Merge starten.
-4. Ergebnisdatei im ID3-Editor prüfen.
-5. Bei Bedarf Titel, Album, Track und Cover anpassen.
-6. ID3-Tags speichern.
+## 📖 Nutzung
 
-## Projektstruktur
+1. Programm starten.
+2. MP3-Dateien per Drag & Drop oder Dateiauswahl laden.
+3. Gewünschte Optionen aktivieren.
+4. Merge starten.
+5. Ergebnis prüfen.
+6. Bei Bedarf ID3-Tags oder Cover anpassen.
 
-- `hoerbuch_merger_V26.py` – Hauptprogramm.
-- `README.md` – Projektdokumentation.
-- `LICENSE` – Lizenz.
-- `requirements.txt` – Python-Abhängigkeiten.
-- `.gitignore` – Nicht versionierte Dateien.
+---
 
-## Lizenz
+## 🗂️ Projektstruktur
 
-Dieses Projekt steht unter der MIT-Lizenz.
+```text
+hoerbuch_merger_V26.py
+hoerbuch_merger_V37.py
+README.md
+LICENSE
+requirements.txt
+docs/gui.png
+```
 
-## Beitrag
+---
+
+## 📄 Lizenz
+
+MIT-Lizenz.
+
+---
+
+## 🤝 Beitrag
 
 Pull Requests und Verbesserungen sind willkommen. Ziel ist ein möglichst einfaches, übersichtliches Tool für Hörspiel- und Hörbuchsammlungen.
