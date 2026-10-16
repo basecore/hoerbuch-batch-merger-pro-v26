@@ -1,4 +1,4 @@
-# 🎧 Hörbuch Batch-Merger PRO V40
+# 🎧 Hörbuch Batch-Merger PRO V43
 
 Ein kompaktes, praktisches Python-Tool für alle, die viele Hörspiel- und Hörbuch-CDs digitalisiert haben und daraus **saubere, gut sortierte MP3-Dateien** machen möchten.
 
@@ -40,6 +40,10 @@ Besonders praktisch ist das bei Serien wie **Die drei ???**, **Die drei ??? Kids
 - Coverbild übernehmen oder manuell setzen
 - Originaldateien optional löschen
 - Automatische Installation fehlender Python-Module beim Start
+- Batch-ID3-Bereinigung für bereits gemergte MP3s
+- Editierbare ID3-Tag-Tabelle
+- Dateiname-zu-Tag und Tag-zu-Dateiname per Muster
+- CUE-Dateien beim Umbenennen berücksichtigen
 - Einfache, übersichtliche GUI für Linux Mint
 
 ---
@@ -48,7 +52,7 @@ Besonders praktisch ist das bei Serien wie **Die drei ???**, **Die drei ??? Kids
 
 ![GUI](docs/gui.png)
 
-*Die grafische Oberfläche bietet Drag & Drop, Albumgruppierung, Trackprüfung und alle wichtigen Merge-Optionen auf einen Blick.*
+*Die grafische Oberfläche bietet Drag & Drop, Albumgruppierung, Trackprüfung, Batch-ID3-Bereinigung und alle wichtigen Merge-Optionen auf einen Blick.*
 
 > **Hinweis:** Wenn noch kein Screenshot unter `docs/gui.png` vorhanden ist, kannst du dort einfach einen Screenshot der GUI ablegen. Die README zeigt ihn dann automatisch an.
 
@@ -112,6 +116,83 @@ Wenn eine Geschichte nicht bei Track 1 beginnt, aber innerhalb ihrer eigenen Num
 
 ---
 
+## 🧹 Batch-ID3-Bereinigung
+
+Im Tab **„ID3-Batch“** kannst du einen Ordner mit bereits gemergten MP3s laden.
+
+Alle Dateien erscheinen in einer editierbaren Tabelle mit:
+
+- Datei
+- Artist
+- Titel
+- Album
+- Track
+- Disc
+- Jahr
+- Genre
+- Cover
+- Anzahl der Rest-Tags
+
+Du kannst Felder direkt in der Tabelle ändern und mit **„Änderungen speichern“** schreiben.
+
+Mit **„Unnötige ID3-Tags löschen“** werden bei allen geladenen MP3s die Rest-Tags entfernt. Behalten werden:
+
+- Artist
+- Titel
+- Album
+- Track
+- Disc
+- Jahr
+- Genre
+- Cover
+
+Optional kannst du vorher ein Backup der MP3s als `.id3backup` erstellen.
+
+---
+
+## 🔁 Dateiname zu Tag
+
+Im Tab **„ID3-Batch“** kannst du ein Muster verwenden, um Dateinamen in ID3-Tags zu verwandeln.
+
+Beispiel:
+
+```text
+%artist% - %album% - $num(%track%,2) - %title%
+```
+
+Damit kann aus einem Dateinamen wie:
+
+```text
+Die Drei Fragezeichen - 001 Hexen gibt es doch - 01 - Hexen gibt es doch.mp3
+```
+
+die ID3-Tag-Struktur gelesen werden.
+
+---
+
+## ✏️ Tag zu Dateiname
+
+Du kannst auch aus den vorhandenen ID3-Tags neue Dateinamen erzeugen.
+
+Beispiel-Muster:
+
+```text
+%artist% - %album% - $num(%track%,2) - %title%
+```
+
+Das Programm erstellt dann einen sauberen, einheitlichen Dateinamen aus den Tags.
+
+Wenn die Option **„CUE-Datei berücksichtigen“** aktiv ist und eine gleichnamige CUE-Datei existiert, wird diese ebenfalls umbenannt und die `FILE`-Zeile in der CUE-Datei automatisch korrigiert.
+
+**Wichtig:** Damit CUE und MP3 zusammenbleiben, müssen beide denselben Basisnamen haben, zum Beispiel:
+
+```text
+001 Hexen gibt es doch.mp3
+001 Hexen gibt es doch.cue
+```
+
+---
+
 ## 🧰 Installation
 
 ### Voraussetzungen
@@ -128,14 +209,14 @@ sudo apt install ffmpeg
 
 ### Python-Module
 
-Die Datei `hoerbuch_merger_V40.py` prüft beim Start automatisch, ob `PyQt5` und `mutagen` vorhanden sind. Fehlende Pakete werden automatisch installiert.
+Die Datei `hoerbuch_merger_V43.py` prüft beim Start automatisch, ob `PyQt5` und `mutagen` vorhanden sind. Fehlende Pakete werden automatisch installiert.
 
 ---
 
 ## ▶️ Starten
 
 ```bash
-python3 hoerbuch_merger_V40.py
+python3 hoerbuch_merger_V43.py
 ```
 
 ---
@@ -148,6 +229,7 @@ python3 hoerbuch_merger_V40.py
 4. Merge starten.
 5. Ergebnis prüfen.
 6. Bei Bedarf ID3-Tags oder Cover anpassen.
+7. Für viele bereits gemergte MP3s den Tab **„ID3-Batch“** verwenden.
 
 ---
 
@@ -158,11 +240,14 @@ hoerbuch_merger_V26.py
 hoerbuch_merger_V37.py
 hoerbuch_merger_V38.py
 hoerbuch_merger_V40.py
+hoerbuch_merger_V43.py
 README.md
 LICENSE
 requirements.txt
 docs/gui.png
 ```
+
+> **Hinweis:** Die Datei `hoerbuch_merger_V43.py` wird manuell in das Repository hochgeladen.
 
 ---
 
