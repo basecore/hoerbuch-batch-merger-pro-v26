@@ -1,4 +1,4 @@
-# 🎧 Hörbuch Batch-Merger PRO V43
+# 🎧 Hörbuch Batch-Merger PRO V47
 
 Ein kompaktes, praktisches Python-Tool für alle, die viele Hörspiel- und Hörbuch-CDs digitalisiert haben und daraus **saubere, gut sortierte MP3-Dateien** machen möchten.
 
@@ -40,9 +40,16 @@ Besonders praktisch ist das bei Serien wie **Die drei ???**, **Die drei ??? Kids
 - Coverbild übernehmen oder manuell setzen
 - Originaldateien optional löschen
 - Automatische Installation fehlender Python-Module beim Start
-- Batch-ID3-Bereinigung für bereits gemergte MP3s
-- Editierbare ID3-Tag-Tabelle
-- Dateiname-zu-Tag und Tag-zu-Dateiname per Muster
+- Eigenständige GUI ohne ältere Merger-Version als Modul
+- Asynchroner ID3-Batch mit Fortschrittsbalken, Statusanzeige und Abbrechen
+- Verschiebbare und interaktiv veränderbare Tabellenspalten
+- Drag & Drop für MP3s und Ordner in Hauptansicht und ID3-Batch
+- Auswahlbeschränkung: Batch-Aktionen betreffen nur markierte Hörbücher
+- Änderungen und Bereinigungen zunächst vormerken, erst mit Speichern schreiben
+- Rückgängig für Vorschauen und gespeicherte Batch-Vorgänge
+- Dateiname-zu-Tag und Tag-zu-Dateiname mit auswählbaren Mustern
+- Gemeinsamer Artist und gemeinsames Genre für mehrere markierte Hörbücher
+- Gründliche ID3-Bereinigung einschließlich Comment, Albumartist, APEv2-Extras und ID3v1
 - CUE-Dateien beim Umbenennen berücksichtigen
 - Einfache, übersichtliche GUI für Linux Mint
 
@@ -52,7 +59,7 @@ Besonders praktisch ist das bei Serien wie **Die drei ???**, **Die drei ??? Kids
 
 ![GUI](docs/gui.png)
 
-*Die grafische Oberfläche bietet Drag & Drop, Albumgruppierung, Trackprüfung, Batch-ID3-Bereinigung und alle wichtigen Merge-Optionen auf einen Blick.*
+*Die grafische Oberfläche bietet Drag & Drop, Albumgruppierung, Trackprüfung, asynchrone Batch-ID3-Bearbeitung und alle wichtigen Merge-Optionen auf einen Blick.*
 
 > **Hinweis:** Wenn noch kein Screenshot unter `docs/gui.png` vorhanden ist, kannst du dort einfach einen Screenshot der GUI ablegen. Die README zeigt ihn dann automatisch an.
 
@@ -116,13 +123,13 @@ Wenn eine Geschichte nicht bei Track 1 beginnt, aber innerhalb ihrer eigenen Num
 
 ---
 
-## 🧹 Batch-ID3-Bereinigung
+## 🧹 ID3-Batch
 
-Im Tab **„ID3-Batch“** kannst du einen Ordner mit bereits gemergten MP3s laden.
+Im Tab **„ID3-Batch“** kannst du einzelne MP3s oder komplette Ordner per Drag & Drop hinzufügen. Unterordner werden ebenfalls durchsucht; doppelte Dateien werden nicht erneut hinzugefügt.
 
 Alle Dateien erscheinen in einer editierbaren Tabelle mit:
 
-- Datei
+- Datei / Umbenennungsvorschau
 - Artist
 - Titel
 - Album
@@ -132,10 +139,40 @@ Alle Dateien erscheinen in einer editierbaren Tabelle mit:
 - Genre
 - Cover
 - Anzahl der Rest-Tags
+- Status
 
-Du kannst Felder direkt in der Tabelle ändern und mit **„Änderungen speichern“** schreiben.
+Die Spalten können per Maus verschoben und in der Breite verändert werden. Die Dateispalte ist groß genug, um den Dateinamen lesbar zu halten; der vollständige Pfad ist als Tooltip verfügbar.
 
-Mit **„Unnötige ID3-Tags löschen“** werden bei allen geladenen MP3s die Rest-Tags entfernt. Behalten werden:
+### Auswahl und Vormerken
+
+Alle Batch-Aktionen betreffen ausschließlich die markierten Hörbücher. Mit **Strg** oder **Shift** können mehrere Hörbücher ausgewählt werden.
+
+Änderungen und Bereinigungen werden zunächst nur vorgemerkt. Erst **„Änderungen speichern“** schreibt die ausgewählten Dateien.
+
+Bei großen Sammlungen läuft das Einlesen, Speichern und Rückgängigmachen im Hintergrund. Fortschrittsbalken und Statuszeile zeigen beispielsweise:
+
+```text
+Tags lesen: 327 / 2.148 — Datei.mp3
+Speichern: 18 / 42 — Album.mp3
+```
+
+Ein laufender Vorgang kann über **„Vorgang abbrechen“** sicher abgebrochen werden.
+
+### Gemeinsame Felder
+
+Wenn du mehrere Hörbücher markierst, kannst du mit **„Gemeinsamer Artist“** und **„Gemeinsames Genre“** allen ausgewählten Hörbüchern denselben Artist bzw. dasselbe Genre zuweisen.
+
+- Leere Felder werden nicht geändert.
+- Artist und Genre können unabhängig voneinander gesetzt werden.
+- Die Änderung wird zunächst vorgemerkt und erst mit **„Änderungen speichern“** geschrieben.
+
+---
+
+## 🧹 Unnötige ID3-Tags löschen
+
+Mit **„Unnötige ID3-Tags löschen“** wird die Bereinigung für die markierten Hörbücher vorgemerkt. Erst **„Änderungen speichern“** wendet sie an.
+
+Behalten werden:
 
 - Artist
 - Titel
@@ -146,43 +183,44 @@ Mit **„Unnötige ID3-Tags löschen“** werden bei allen geladenen MP3s die Re
 - Genre
 - Cover
 
-Optional kannst du vorher ein Backup der MP3s als `.id3backup` erstellen.
+Entfernt werden unter anderem:
+
+- `COMM` / Comment
+- `TPE2` / Albumartist
+- weitere unnötige ID3v2-Frames
+- unbekannte ID3-Frames
+- unnötige APEv2-Tags
+- ID3v1-Tags
+
+Nach der Bereinigung prüft das Programm die Datei erneut. Bleiben unerwünschte Tags übrig, wird die Bereinigung als unvollständig gemeldet.
+
+**Zusätzlich dauerhafte Backups (.id3backup)** ist standardmäßig deaktiviert. Du kannst die Option bei Bedarf vor dem Speichern aktivieren.
 
 ---
 
 ## 🔁 Dateiname zu Tag
 
-Im Tab **„ID3-Batch“** kannst du ein Muster verwenden, um Dateinamen in ID3-Tags zu verwandeln.
+Im Tab **„ID3-Batch“** wählst du ein Muster, um Dateinamen in ID3-Tags zu verwandeln.
 
-Beispiel:
+Verfügbare Muster:
 
 ```text
 %artist% - %album% - $num(%track%,2) - %title%
+%track% %title%
+%album%
+%track%.%artist% - %title%
+$num(%track%,3) %title%
 ```
 
-Damit kann aus einem Dateinamen wie:
-
-```text
-Die Drei Fragezeichen - 001 Hexen gibt es doch - 01 - Hexen gibt es doch.mp3
-```
-
-die ID3-Tag-Struktur gelesen werden.
+Beispiel: Mit dem Standardmuster kann aus einem passend benannten Dateinamen die ID3-Tag-Struktur gelesen werden.
 
 ---
 
 ## ✏️ Tag zu Dateiname
 
-Du kannst auch aus den vorhandenen ID3-Tags neue Dateinamen erzeugen.
+Du kannst auch aus den vorhandenen ID3-Tags neue Dateinamen erzeugen. Dabei wird das aktuell gewählte Muster verwendet.
 
-Beispiel-Muster:
-
-```text
-%artist% - %album% - $num(%track%,2) - %title%
-```
-
-Das Programm erstellt dann einen sauberen, einheitlichen Dateinamen aus den Tags.
-
-Wenn die Option **„CUE-Datei berücksichtigen“** aktiv ist und eine gleichnamige CUE-Datei existiert, wird diese ebenfalls umbenannt und die `FILE`-Zeile in der CUE-Datei automatisch korrigiert.
+Wenn **„CUE-Datei berücksichtigen“** aktiv ist und eine passende CUE-Datei existiert, wird diese ebenfalls umbenannt und die `FILE`-Zeile in der CUE-Datei automatisch korrigiert.
 
 **Wichtig:** Damit CUE und MP3 zusammenbleiben, müssen beide denselben Basisnamen haben, zum Beispiel:
 
@@ -204,20 +242,16 @@ Wenn die Option **„CUE-Datei berücksichtigen“** aktiv ist und eine gleichna
 
 ```bash
 sudo apt update
-sudo apt install ffmpeg
+sudo apt install python3-pyqt5 python3-mutagen ffmpeg
 ```
 
-### Python-Module
-
-Die Datei `hoerbuch_merger_V43.py` prüft beim Start automatisch, ob `PyQt5` und `mutagen` vorhanden sind. Fehlende Pakete werden automatisch installiert.
-
----
-
-## ▶️ Starten
+### Starten
 
 ```bash
-python3 hoerbuch_merger_V43.py
+python3 hoerbuch_merger_V47.py
 ```
+
+Die V47 ist eigenständig. Es wird keine ältere Merger-Pythondatei im selben Ordner benötigt.
 
 ---
 
@@ -230,6 +264,7 @@ python3 hoerbuch_merger_V43.py
 5. Ergebnis prüfen.
 6. Bei Bedarf ID3-Tags oder Cover anpassen.
 7. Für viele bereits gemergte MP3s den Tab **„ID3-Batch“** verwenden.
+8. Gewünschte Hörbücher markieren, Änderungen vornehmen und anschließend speichern.
 
 ---
 
@@ -241,13 +276,15 @@ hoerbuch_merger_V37.py
 hoerbuch_merger_V38.py
 hoerbuch_merger_V40.py
 hoerbuch_merger_V43.py
+hoerbuch_merger_V46.py
+hoerbuch_merger_V47.py
 README.md
 LICENSE
 requirements.txt
 docs/gui.png
 ```
 
-> **Hinweis:** Die Datei `hoerbuch_merger_V43.py` wird manuell in das Repository hochgeladen.
+> **Hinweis:** `hoerbuch_merger_V47.py` ist die aktuelle empfohlene Version.
 
 ---
 
